@@ -112,7 +112,7 @@ public final class CronTabList {
             lineNumber++;
             line = line.trim();
 
-            if (lineNumber == 1 && line.startsWith("TZ=")) {
+            if (line.startsWith("TZ=")) {
                 final String timezoneString = line.replace("TZ=", "");
                 timezone = getValidTimezone(timezoneString);
                 if (timezone != null) {

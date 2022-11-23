@@ -340,6 +340,20 @@ public class CronTabTest {
         assertEquals("[35, 56]", times.toString());
     }
 
+    @Issue("JENKINS-69919")
+    @Test public void testMultipleTimezones() throws Exception {
+        CronTabList tabs = CronTabList.create("TZ=Australia/Sydney\nH * * * *\nTZ=Europe/London\nH * * * *", Hash.from("seed"));
+        List<Integer> times = new ArrayList<>();
+        for (int i = 0; i < 60; i++) {
+            GregorianCalendar calendar = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
+            calendar.set(2013, Calendar.APRIL, 3, 11, i, 0);
+            if (tabs.check(calendar)) {
+                times.add(i);
+            }
+        }
+        assertEquals("[35, 56]", times.toString());
+    }
+
     @Issue("SECURITY-790")
     @Test(timeout = 1000L) public void testLongMonths() throws Exception {
         Calendar cal = Calendar.getInstance();
